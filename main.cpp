@@ -2,8 +2,9 @@
 #include <iostream>
 #include <queue>
 #include <stack>
+#include <unordered_map>
+#include <unordered_set>
 using namespace std;
-#include <bits/stdc++.h>
 
 #include "BinaryTreeNode.h"
 #include "Node.h"
@@ -1280,6 +1281,44 @@ BinaryTreeNode<int> *getTargetCopy(BinaryTreeNode<int> *original,
   BinaryTreeNode<int> *right =
       getTargetCopy(original->right, cloned->right, target);
   return left ? left : right;
+}
+// **************************************************************************************
+
+// **************************************************************************************
+// Given a binary tree, print it vertically. The following example illustrates vertical 
+// order traversal.
+//            1
+//         /    \ 
+//        2      3
+//       / \   /   \
+//      4   5  6   7
+//                /  \ 
+//               8   9 
+               
+              
+// The output of print this tree vertically will be:
+// 4
+// 2
+// 1 5 6
+// 3 8
+// 7
+// 9
+
+void fillLevelMap(BinaryTreeNode<int> *root,
+                  unordered_map<int, vector<int>> &map, int level = 0) {
+  if (!root) return;
+  map[level].push_back(root->data);
+  fillLevelMap(root->left, map, level + 1);
+  fillLevelMap(root->right, map, level - 1);
+}
+
+void printVertically(BinaryTreeNode<int> *root) {
+  unordered_map<int, vector<int>> map;
+  fillLevelMap(root, map);
+  for (pair<int, vector<int>> p : map) {
+    for (int i = 0; i < p.second.size(); i++) cout << p.second.at(i) << " ";
+    cout << endl;
+  }
 }
 // **************************************************************************************
 
